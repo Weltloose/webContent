@@ -11,6 +11,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SRWebSocket.h"
+#import "dataModel.h"
 
 @interface getwebContentViewController : UIViewController
 {
@@ -40,6 +41,7 @@
 @property(nonatomic, strong) NSString *username, *password, *timeFrom, *timeTo, *content;
 @property(nonatomic) NSInteger groupID, eventID;
 @property(nonatomic, strong) SRWebSocket *webSocket;
+@property(nonatomic, strong) dataModel *datas;
 
 @end
 

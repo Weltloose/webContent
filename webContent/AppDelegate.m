@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "getwebContent.h"
+#import "dataModel.h"
 
 @interface AppDelegate ()
 
@@ -21,10 +22,13 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     getwebContentViewController *uvc = [[getwebContentViewController alloc] init];
-    uvc.username = @"xiaohong";
+    
+    dataModel *data = [[dataModel alloc] init];
+    uvc.datas = data;
+    uvc.username = @"xiaodong";
     uvc.password = @"1234";
     uvc.groupID = 2;
-    uvc.eventID = 8;
+    uvc.eventID = 2;
     // 关于ios时间 https://www.jianshu.com/p/f8aab37a27ff
     uvc.timeFrom = @"2014-11-10 02:10:11";
     uvc.timeTo = @"2014-11-11 02:10:11";

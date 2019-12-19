@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		88FCD69523AB8EBF00234247 /* getwebContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FCD69423AB8EBF00234247 /* getwebContent.m */; };
 		88FFDBD923A71D1B00D05638 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FFDBD823A71D1B00D05638 /* AppDelegate.m */; };
 		88FFDBDC23A71D1B00D05638 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FFDBDB23A71D1B00D05638 /* ViewController.m */; };
 		88FFDBE123A71D1F00D05638 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88FFDBE023A71D1F00D05638 /* Assets.xcassets */; };
@@ -14,7 +15,7 @@
 		88FFDBE723A71D1F00D05638 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FFDBE623A71D1F00D05638 /* main.m */; };
 		88FFDBF123A71D1F00D05638 /* webContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FFDBF023A71D1F00D05638 /* webContentTests.m */; };
 		88FFDBFC23A71D1F00D05638 /* webContentUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FFDBFB23A71D1F00D05638 /* webContentUITests.m */; };
-		88FFDC0B23A71D8B00D05638 /* getwebContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FFDC0A23A71D8B00D05638 /* getwebContent.m */; };
+		88FFDC5223AB8A5E00D05638 /* dataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FFDC5123AB8A5E00D05638 /* dataModel.m */; };
 		FED0BFAC96980F63AC2402B4 /* libPods-webContent.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD252C0D18D70FF98E670A62 /* libPods-webContent.a */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		81601C978A6CF74CD5C76A9F /* Pods-webContent.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-webContent.debug.xcconfig"; path = "Target Support Files/Pods-webContent/Pods-webContent.debug.xcconfig"; sourceTree = "<group>"; };
+		88FCD69423AB8EBF00234247 /* getwebContent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = getwebContent.m; sourceTree = "<group>"; };
 		88FFDBD423A71D1B00D05638 /* webContent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = webContent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88FFDBD723A71D1B00D05638 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		88FFDBD823A71D1B00D05638 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -52,8 +54,9 @@
 		88FFDBF723A71D1F00D05638 /* webContentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = webContentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		88FFDBFB23A71D1F00D05638 /* webContentUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = webContentUITests.m; sourceTree = "<group>"; };
 		88FFDBFD23A71D1F00D05638 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		88FFDC0A23A71D8B00D05638 /* getwebContent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = getwebContent.m; sourceTree = "<group>"; };
 		88FFDC0C23A71D9700D05638 /* getwebContent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = getwebContent.h; sourceTree = "<group>"; };
+		88FFDC5023AB8A5200D05638 /* dataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dataModel.h; sourceTree = "<group>"; };
+		88FFDC5123AB8A5E00D05638 /* dataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = dataModel.m; sourceTree = "<group>"; };
 		AD252C0D18D70FF98E670A62 /* libPods-webContent.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-webContent.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDF81F8D316BDAA30F579F87 /* Pods-webContent.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-webContent.release.xcconfig"; path = "Target Support Files/Pods-webContent/Pods-webContent.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -109,6 +112,7 @@
 		88FFDBD623A71D1B00D05638 /* webContent */ = {
 			isa = PBXGroup;
 			children = (
+				88FFDC4F23AB88A200D05638 /* model */,
 				88FFDC0923A71D7B00D05638 /* Controller */,
 				88FFDBD723A71D1B00D05638 /* AppDelegate.h */,
 				88FFDBD823A71D1B00D05638 /* AppDelegate.m */,
@@ -143,10 +147,19 @@
 		88FFDC0923A71D7B00D05638 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				88FFDC0A23A71D8B00D05638 /* getwebContent.m */,
 				88FFDC0C23A71D9700D05638 /* getwebContent.h */,
+				88FCD69423AB8EBF00234247 /* getwebContent.m */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		88FFDC4F23AB88A200D05638 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				88FFDC5023AB8A5200D05638 /* dataModel.h */,
+				88FFDC5123AB8A5E00D05638 /* dataModel.m */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 		BDB11575205BC6FC2F31DAC2 /* Frameworks */ = {
@@ -322,9 +335,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				88FFDBDC23A71D1B00D05638 /* ViewController.m in Sources */,
+				88FFDC5223AB8A5E00D05638 /* dataModel.m in Sources */,
+				88FCD69523AB8EBF00234247 /* getwebContent.m in Sources */,
 				88FFDBE723A71D1F00D05638 /* main.m in Sources */,
 				88FFDBD923A71D1B00D05638 /* AppDelegate.m in Sources */,
-				88FFDC0B23A71D8B00D05638 /* getwebContent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

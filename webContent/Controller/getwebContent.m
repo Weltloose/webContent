@@ -16,6 +16,7 @@
 @implementation getwebContentViewController
 
 @synthesize username, password, groupID, eventID, timeFrom, timeTo, content, webSocket;
+@synthesize datas;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -44,9 +45,12 @@
 
 //3. 接收数据
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message{
-    NSLog(@"%@", message);
-    
-    // 如果接收的是Jons字符串，可以转字典。如果是一对多接收，可以使用广播
+    //NSLog(@"%@", message);
+    NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    self.datas.events[[[NSString alloc]initWithFormat: @"%@", dict[@"groupID"]]] = [dict[@"events"] mutableCopy];
+    NSLog(@"data model info: ");
+    [self.datas print];
 }
 
 
@@ -61,15 +65,18 @@
     NSString *body = [bodyStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     urlRequest.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask * dataTask =[delegateFreeSession dataTaskWithRequest:urlRequest
-                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                if(error == nil) {
-                                                                    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                                    NSLog(@"%@",[dict[@"ok"] boolValue] ? @"YES" : @"NO");
-                                                                }
-                                                            }];
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error == nil) {
+                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"%@", dict);
+                if([dict[@"ok"] boolValue] == true)
+                    self.datas.username = self.username;
+                NSLog(@"data model info: ");
+                [self.datas print];
+            }
+        }];
     [dataTask resume];
-    
 }
 
 -(void) loginUser {
@@ -83,13 +90,17 @@
     NSString *body = [bodyStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     urlRequest.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask * dataTask =[delegateFreeSession dataTaskWithRequest:urlRequest
-                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                if(error == nil) {
-                                                                    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                                    NSLog(@"%@",[dict[@"ok"] boolValue] ? @"YES" : @"NO");
-                                                                }
-                                                            }];
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error == nil) {
+                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"%@", dict);
+                if([dict[@"ok"] boolValue] == true)
+                    self.datas.username = self.username;
+                NSLog(@"data model info: ");
+                [self.datas print];
+            }
+        }];
     [dataTask resume];
     
 }
@@ -103,13 +114,16 @@
     NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:url];
     [urlRequest setHTTPMethod:@"GET"];
     NSURLSessionDataTask * dataTask =[delegateFreeSession dataTaskWithRequest:urlRequest
-                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                if(error == nil) {
-                                                                    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                                    NSLog(@"%@", dict);
-                                                                }
-                                                            }];
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error == nil) {
+                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"%@", dict);
+                self.datas.events = [dict[@"events"][@"data"] mutableCopy];
+                NSLog(@"data model info: ");
+                [self.datas print];
+            }
+        }];
     [dataTask resume];
     
 }
@@ -122,15 +136,16 @@
     NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:url];
     [urlRequest setHTTPMethod:@"GET"];
     NSURLSessionDataTask * dataTask =[delegateFreeSession dataTaskWithRequest:urlRequest
-                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                if(error == nil) {
-                                                                    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                                    NSLog(@"%@", dict);
-                                                                } else {
-                                                                    NSLog(@"error: ", error);
-                                                                }
-                                                            }];
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error == nil) {
+                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"%@", dict);
+                self.datas.groups = [dict[@"groupList"] mutableCopy];
+                NSLog(@"data model info: ");
+                [self.datas print];
+            }
+        }];
     [dataTask resume];
     
 }
@@ -143,17 +158,28 @@
     NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:url];
     [urlRequest setHTTPMethod:@"POST"];
     NSString *bodyStr = [NSString stringWithFormat:@"username=%@&groupID=%d", self.username, self.groupID];
-    NSLog(@"%@", bodyStr);
     NSString *body = [bodyStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     urlRequest.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask * dataTask =[delegateFreeSession dataTaskWithRequest:urlRequest
-                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                if(error == nil) {
-                                                                    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                                    NSLog(@"%@", dict);
-                                                                }
-                                                            }];
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error == nil) {
+                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"%@", dict);
+                if([dict[@"ok"] boolValue]==true){
+                    for(int i = 0; i < (int)datas.groups.count; i++)
+                    { if([self.datas.groups[i] intValue]==self.groupID)
+                        {
+                            [datas.groups removeObjectAtIndex:i];
+                            break;
+                        }
+                    }
+                }
+                NSLog(@"data model info: ");
+                [self.datas print];
+                
+            }
+        }];
     [dataTask resume];
     
 }
@@ -169,13 +195,18 @@
     NSString *body = [bodyStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     urlRequest.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask * dataTask =[delegateFreeSession dataTaskWithRequest:urlRequest
-                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                if(error == nil) {
-                                                                    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                                    NSLog(@"%@", dict);
-                                                                }
-                                                            }];
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error == nil) {
+                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"%@", dict);
+                if([dict[@"ok"] boolValue] == true){
+                    [datas.groups addObject:[[NSNumber alloc]initWithInt:self.groupID]];
+                }
+                NSLog(@"data model info: ");
+                [self.datas print];
+            }
+        }];
     [dataTask resume];
     
 }
@@ -191,13 +222,18 @@
     NSString *body = [bodyStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     urlRequest.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask * dataTask =[delegateFreeSession dataTaskWithRequest:urlRequest
-                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                if(error == nil) {
-                                                                    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                                    NSLog(@"%@", dict);
-                                                                }
-                                                            }];
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error == nil) {
+                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"%@", dict);
+                if([dict[@"groupID"] intValue] != -1){
+                    [self.datas.groups addObject:dict[@"groupID"]];
+                }
+                NSLog(@"data model info: ");
+                [self.datas print];
+            }
+        }];
     [dataTask resume];
     
 }
@@ -213,13 +249,13 @@
     NSString *body = [bodyStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     urlRequest.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask * dataTask =[delegateFreeSession dataTaskWithRequest:urlRequest
-                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                if(error == nil) {
-                                                                    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                                    NSLog(@"%@", dict);
-                                                                }
-                                                            }];
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error == nil) {
+                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"%@", dict);
+            }
+        }];
     [dataTask resume];
     
 }
@@ -235,13 +271,13 @@
     NSString *body = [bodyStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     urlRequest.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask * dataTask =[delegateFreeSession dataTaskWithRequest:urlRequest
-                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                if(error == nil) {
-                                                                    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                                    NSLog(@"%@", dict);
-                                                                }
-                                                            }];
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error == nil) {
+                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"%@", dict);
+            }
+        }];
     [dataTask resume];
     
 }
@@ -257,13 +293,13 @@
     NSString *body = [bodyStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     urlRequest.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     NSURLSessionDataTask * dataTask =[delegateFreeSession dataTaskWithRequest:urlRequest
-                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                if(error == nil) {
-                                                                    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                                    NSLog(@"%@", dict);
-                                                                }
-                                                            }];
+        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error == nil) {
+                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"%@", dict);
+            }
+        }];
     [dataTask resume];
     
 }
@@ -399,4 +435,3 @@
 }
 
 @end
-
